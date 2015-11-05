@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
+using OpenQA.Selenium.Support.UI;
 
 namespace SeleniumTutorialNet
 {
-    class TrackingDemo
+    /// <summary>
+    /// demo 2: grab data
+    /// </summary>
+    public class TrackingDemo
     {
         public static void TrackWithoutBrowser()
         {
             // initialize a WebDriver instance
             IWebDriver driver = new PhantomJSDriver();
-            // load google search page
+            // load search page
             driver.Navigate().GoToUrl("http://www.purolator.com/purolator/ship-track/tracking-summary.page?submit=true&componentID=1359477580240");
             // wait 5 seconds
             driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
@@ -32,7 +36,7 @@ namespace SeleniumTutorialNet
 
             Console.WriteLine("Page title: " + driver.Title);
             // enter tracking number and submit
-            IWebElement element = driver.FindElement(By.Id("search"));
+            IWebElement element = driver.FindElement(By.CssSelector("textarea#search"));
             element.SendKeys("JFV242486848");
             element.Submit();
             // wait 5 seconds
@@ -46,18 +50,38 @@ namespace SeleniumTutorialNet
                     stream.Write(bytes, 0, bytes.Length);
                 }
             }
+
+
+
+
+            // locate the tracking history table
+            var trackingHistory = driver.FindElement(By.CssSelector("#historyDiv table#history tbody"));
+            string result = trackingHistory.Text;
+            var rows = trackingHistory.FindElements(By.TagName("tr")).ToList();
+            string locationPath = "//td[@class='location']";
+            var locations = driver.FindElements(By.XPath(locationPath));
+            foreach (var location in locations)
+            {
+                string a = location.Text;
+            }
+            foreach (var row in rows)
+            {
+                var t = row.FindElements(By.TagName("td"));
+                string location = row.FindElements(By.ClassName("location")).FirstOrDefault().Text;
+                string event_name = row.FindElements(By.TagName("td"))[3].Text;
+            }
             // quit the driver
             driver.Quit();
         }
 
-        public static void TrackWithoutChrome()
+        public static void TrackWithChrome()
         {
             // initialize a WebDriver instance
             ChromeDriver driver = new ChromeDriver();
             // load google search page
             driver.Navigate().GoToUrl("http://www.purolator.com/purolator/ship-track/tracking-summary.page?submit=true&componentID=1359477580240");
             // wait 5 seconds
-            driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             // write page
             using (Stream stream = File.Open(@"d:\delete\selenium\1.html", FileMode.Create, FileAccess.ReadWrite))
             {
@@ -70,9 +94,10 @@ namespace SeleniumTutorialNet
 
             Console.WriteLine("Page title: " + driver.Title);
             // enter tracking number and submit
-            IWebElement element = driver.FindElementById("search");
+            IWebElement element = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("textarea#search")));
+            element.Click();
             element.SendKeys("JFV242486848");
-            //element.Submit();
+            element.Submit();
             // wait 5 seconds
             driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
             // write result page

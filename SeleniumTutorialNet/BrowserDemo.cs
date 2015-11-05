@@ -9,6 +9,9 @@ using OpenQA.Selenium.Remote;
 
 namespace SeleniumTutorialNet
 {
+    /// <summary>
+    /// demo 1: manipulate browser window
+    /// </summary>
     class BrowserDemo
     {
         public static void OpenHtmlUnitDriver()

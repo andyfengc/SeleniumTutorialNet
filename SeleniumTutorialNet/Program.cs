@@ -12,7 +12,9 @@ namespace SeleniumTutorialNet
         {
             //BrowserDemo.OpenHtmlUnitDriver();
             // BrowserDemo.OpenPhantomJs();
-            TrackingDemo.TrackWithoutChrome();
+
+            TrackingDemo.TrackWithoutBrowser();
+            //TrackingDemo.TrackWithChrome();
         }
     }
 }
