@@ -36,7 +36,6 @@ namespace SeleniumTutorialNet
                 }
             }
 
-
             Console.WriteLine("Page title: " + driver.Title);
             // enter tracking number and submit
             IWebElement element = driver.FindElement(By.CssSelector("form textarea#search"));
