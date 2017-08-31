@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrowserDemo.cs" />
-    <Compile Include="ChangeableHttpServer.cs" />
     <Compile Include="HttpServerAsync.cs" />
     <Compile Include="LocalParser.cs" />
     <Compile Include="Program.cs" />
